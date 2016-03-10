@@ -1,0 +1,10 @@
+<h2>Confirmacion de Cuenta</h2>
+
+<p><strong>Bienvenido: </strong>{{ user.username|upper }}</p>
+
+<p>Para Activa su Cuenta: <a href="{{ url }}{% url 'user-activate' code user.id %}">Click aqui</a></p>
+
+
+<!--h3><strong>En Enlace expira en 2 horas</strong></h3-->
+
+<p><strong>SI USTED NO SOLICITO EL CAMBIO DE CONTRASEÑA IGNORE ESTE MENSAJE</strong></p>

@@ -1,0 +1,47 @@
+{% extends 'form.html' %}
+{% block title %}
+Registro Usuario
+{% endblock %}
+
+{% block legend %}
+Registro De Usuario
+{% endblock %}
+
+{% block cuerpo_form %}
+    {% for field in formemail %}
+        {% if field.errors %}
+            <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+                {{ field.errors }}
+            </div>
+        {% endif %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            <div class="col-md-8">
+                {{ field }}
+            </div>
+        </div>
+        {% if field.help_text %}
+            <p>
+                <small class="fg-green">{{ field.help_text }}</small>
+            </p>
+        {% endif %}
+    {% endfor %}
+    {% for field in formuser %}
+        {% if field.errors %}
+            <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+                {{ field.errors }}
+            </div>
+        {% endif %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            <div class="col-md-8">
+                {{ field }}
+            </div>
+        </div>
+        {% if field.help_text %}
+            <p>
+                <small class="fg-green">{{ field.help_text }}</small>
+            </p>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
