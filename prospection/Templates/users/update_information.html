@@ -1,16 +1,19 @@
 {% extends 'form.html' %}
 {% block title %}
-Cambiar Nombre de Usuario
+    Modificar Información
 {% endblock %}
 
 {% block menu_left %}
 {% include 'users/__menuleft.html' %}
+<script>
+    $('#my_information').addClass('active');
+</script>
 {% endblock %}
 
 {% block legend %}
-Cambio de Nombre de Usuario
+Modificar Información
 {% endblock %}
 
 {% block submit %}
-Cambiar
+Modificar
 {% endblock %}

@@ -10,10 +10,12 @@ from django.template.loader import render_to_string
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, AdminPasswordChangeForm
 from django.conf import settings
 
+from datetime import timedelta, datetime
+
 from django.contrib.auth.models import User
 from prospection.general_utility import create_code_activation, send_email
-from users.models import ActivationCode
-from users.form import EmailForm, UsernameForm
+from users.models import ActivationCode, Person
+from users.form import EmailForm, UsernameForm, PersonForm
 
 def index(request):
 
@@ -79,15 +81,22 @@ def user_login(request):
             access = authenticate(username=username, password=password)
             if access is not None:
                 if access.is_active:
-                    login(request, access)
-                    if 'next' in request.GET:
-                        msm = "Inicio de Sesion Correcto <strong>Gracias Por Su Visita</strong>"
-                        messages.add_message(request, messages.INFO, msm)
-                        return HttpResponseRedirect(str(request.GET['next']))
+                    end_joined = access.date_joined + timedelta(days = 30)
+                    today = datetime.now()
+                    #COMPROVAR SI REALIZO EL PAFO U OTRA FORMA DE CONTROL PARA QUE NO SEA FREE
+                    if today.strftime("%Y-%m-%d %H:%M") <= end_joined.strftime("%Y-%m-%d %H:%M"):
+                        login(request, access)
+                        if 'next' in request.GET:
+                            msm = "Inicio de Sesion Correcto <strong>Gracias Por Su Visita</strong>"
+                            messages.add_message(request, messages.INFO, msm)
+                            return HttpResponseRedirect(str(request.GET['next']))
+                        else:
+                            msm = "Inicio de Sesion Existoso <strong>Gracias Por Su Visita</strong>"
+                            messages.add_message(request, messages.SUCCESS, msm)
+                            return HttpResponseRedirect(reverse(user_notification))
                     else:
-                        msm = "Inicio de Sesion Existoso <strong>Gracias Por Su Visita</strong>"
-                        messages.add_message(request, messages.SUCCESS, msm)
-                        return HttpResponseRedirect(reverse(user_notification))
+                        sms = 'Su Cuenta ya Caduco '
+                        messages.warning(request, sms)
                 else:
                     sms = "Su Cuenta No Esta Activada <strong>Verifique su Correo Electronico Para Activar La Cuenta</strong>"
                     messages.warning(request, sms)
@@ -139,4 +148,97 @@ def user_changeusername(request):
         form= UsernameForm(instance=request.user)
     return  render(request, 'users/change_username.html', {
         'form' :form,
+    })
+
+def user_sendcoderesetpass(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        if User.objects.filter(email = email):
+            user = User.objects.get(email = email)
+            url = settings.ADDREES
+            activation = ActivationCode.objects.create(
+                code = create_code_activation(),
+                user = user,
+                description = 'Reset Pass',
+            )
+            html = render_to_string('mail/send_code_reset_pass.html',{
+                'code':activation.code,
+                'url':url,
+                'user':user,
+            })
+            send_email(email, html, subject='Recuperacion de Contraseña')
+            sms = u"Un mensage fue enviado a su correo electronico para recuperar la contraseña"
+            messages.add_message(request, messages.INFO, sms)
+            return HttpResponseRedirect('/')
+        else:
+            sms = "El Correo Eletronico no esta registrado"
+            messages.warning(request, sms)
+            return HttpResponseRedirect(reverse(user_register))
+    return render(request, 'users/send_resetpass.html')
+
+def user_recoverpass(request, user_id, code):
+    if ActivationCode.objects.filter(user_id = user_id, state = True, code = code, description='Reset Pass'):
+        activation = ActivationCode.objects.get(user_id = user_id, state = True, code = code, description='Reset Pass')
+        user = User.objects.get(id = user_id)
+        envio = activation.send_time + timedelta(hours=24)
+        today = datetime.now()
+        if envio.strftime("%Y-%m-%d %H:%M") >= today.strftime("%Y-%m-%d %H:%M"):
+            if request.method == 'POST':
+                form = AdminPasswordChangeForm(user=user, data=request.POST)
+                if form.is_valid():
+                    form.save()
+                    activation.state = False
+                    activation.save()
+                    sms = "Contraseña Cambiada Correctamente"
+                    messages.success(request, sms)
+                    return HttpResponseRedirect(reverse(user_login))
+            else:
+                form = AdminPasswordChangeForm(user=user)
+            return render(request, 'users/reset_pass.html', {
+                'form':form,
+            })
+        else:
+            sms = "El Enlace ya expiro por favor solicite uno nuevo"
+            messages.error(request, sms, 'danger')
+            return HttpResponseRedirect(reverse(user-user-user_sendcoderesetpass))
+    else:
+        sms = "Enlace no Valido"
+        messages.error(request, sms, 'danger')
+        return HttpResponseRedirect('/')
+
+@login_required(login_url='/login')
+def my_information(request):
+    if Person.objects.filter(user = request.user):
+        person = Person.objects.get(user = request.user)
+        return render(request, 'users/my_information.html',{
+            'person':person,
+        })
+    else:
+        if request.method == 'POST':
+            form = PersonForm(request.POST)
+            if form.is_valid():
+                form.save()
+                sms = 'Información Registrada Correctamente'
+                messages.success(request, sms)
+                return HttpResponseRedirect(reverse(my_information))
+        else:
+            form = PersonForm(initial={'user':request.user})
+    return render(request, 'users/new_person.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login')
+def modify_information(request):
+    person = Person.objects.get(user = request.user)
+    if request.method == 'POST':
+        form = PersonForm(request.POST, instance=person)
+        if form.is_valid():
+            form.save()
+            sms = 'Información Registrada Correctamente'
+            messages.success(request, sms)
+            return HttpResponseRedirect(reverse(my_information))
+    else:
+        form = PersonForm(instance=person)
+    return render(request, 'users/update_information.html', {
+        'form':form,
     })

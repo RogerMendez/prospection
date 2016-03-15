@@ -149,4 +149,5 @@ EMAIL_HOST_PASSWORD = 'fsmfarxuvbzhrmav'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-ADDREES = 'http://192.168.1.107:8000'
+ADDREES = 'http://127.0.0.1:8000'
+#ADDREES = 'http://192.168.1.107:8000'

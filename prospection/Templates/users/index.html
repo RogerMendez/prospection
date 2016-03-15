@@ -3,6 +3,13 @@
 Centro de Notificaciones
 {% endblock %}
 
+{% block menu_left %}
+{% include 'users/__menuleft.html' %}
+{% endblock %}
 {% block body %}
-<h1>Bienvenido {{ user.username|upper }}</h1>
+<div class="row">
+    <h1>
+        bienvenido {{ request.user }}
+    </h1>
+</div>
 {% endblock %}

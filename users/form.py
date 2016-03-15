@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 
 from django.contrib.auth.models import User
+from users.models import Person
 
 class EmailForm(forms.Form):
     email = forms.EmailField(label='Correo Electronico', widget=forms.TextInput(attrs={'type':'email'}))
@@ -15,3 +16,8 @@ class UsernameForm(ModelForm):
     class Meta:
         model = User
         fields = ['username']
+
+class PersonForm(ModelForm):
+    class Meta:
+        model = Person
+        exclude = ['user']

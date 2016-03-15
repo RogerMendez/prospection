@@ -1,0 +1,10 @@
+<h2>Información de Recuperacion de contraseña</h2>
+
+<p><strong>Su Nombre de Usuario: </strong>{{ user.username }}</p>
+
+<p>Para recuperar su contraseña: <a href="{{ url }}{% url 'user-recoverpass' code user.id %}">Click aqui</a></p>
+
+
+<h3><strong>En Enlace expira en 24 horas</strong></h3>
+
+<p><strong>SI USTED NO SOLICITO EL CAMBIO DE CONTRASEÑA IGNORE ESTE MENSAJE</strong></p>

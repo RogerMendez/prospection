@@ -18,35 +18,40 @@
 </head>
 <body>
 {% include '__menu.html' %}
-<div class="container">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                                {{ message|safe }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-                {% block body %}
-                    <div class="jumbotron">
-                        <h1>Navbar example</h1>
-                        <p>
-                            This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.
-                        </p>
-                        <p>
-                            <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs »</a>
-                        </p>
-                    </div>
-                {% endblock %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-2">
+                    {% block menu_left %}{% endblock %}
+                </div>
+                <div class="col-md-8">
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                                    {{ message|safe }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% block body %}
+                        <div class="jumbotron">
+                            <h1>Navbar example</h1>
+                            <p>
+                                This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.
+                            </p>
+                            <p>
+                                <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs »</a>
+                            </p>
+                        </div>
+                    {% endblock %}
+                </div>
+                <div class="col-md-2"></div>
             </div>
         </div>
     </div>
 </div>
-
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </body>
 </html>

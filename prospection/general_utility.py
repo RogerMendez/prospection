@@ -12,8 +12,7 @@ def create_code_activation():
     return code
 
 
-def send_email(email, html):
-    subject = 'Codigo De Activacion'
+def send_email(email, html, subject = 'Codigo De Activacion'):
     text_content = 'Mensaje...nLinea 2nLinea3'
     html_content = html
     from_email = '"Prospection" <sieboliva@gmail.com>'

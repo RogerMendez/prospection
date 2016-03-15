@@ -7,6 +7,15 @@ Iniciar Sesion
 Iniciar Sesion
 {% endblock %}
 
+{% block other_option %}
+<p>
+    <a href="{% url 'user-register' %}">Registrate Ahora</a>
+</p>
+<p>
+    <a href="{% url 'user-sendresedpass' %}">Olvidaste tu Contraseña</a>
+</p>
+{% endblock %}
+
 {% block submit %}
 Entrar
 {% endblock %}

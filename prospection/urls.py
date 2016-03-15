@@ -23,7 +23,7 @@ urlpatterns = [
 
     url(r'^$', index ),
 
-    url(r'^login/$', user_login, name='user-login'),
+    url(r'^login$', user_login, name='user-login'),
     url(r'^logout/$', user_logout, name='user-logout'),
 
     url(r'^users/', include('users.urls')),

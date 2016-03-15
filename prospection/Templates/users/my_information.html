@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% block title %}
+Centro de Notificaciones
+{% endblock %}
+
+{% block menu_left %}
+{% include 'users/__menuleft.html' %}
+<script>
+    $('#my_information').addClass('active');
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            <a href="{% url 'user-modifyinformation' %}">Modificar Información</a>
+        </p>
+        <p>
+            <strong>Nombres: </strong>{{ person.name }}
+        </p>
+        <p>
+            <strong>Apellidos: </strong>{{ person.surnames }}
+        </p>
+        <p>
+            <strong>Celular: </strong>{{ person.cellphone }}
+        </p>
+        <p>
+            <strong>Telefono: </strong>{{ person.phono }}
+        </p>
+        <p>
+            <strong>Dirección: </strong>{{ person.address }}
+        </p>
+    </div>
+</div>
+{% endblock %}
