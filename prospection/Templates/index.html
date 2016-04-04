@@ -1,7 +1,7 @@
-{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% load staticfiles %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,8 +12,7 @@
     {% endblock %}
 
     <script src="{% static 'js/jquery-2.2.1.min.js' %}"></script>
-    {% block my_script %}
-    {% endblock %}
+
     <title>{% block title %}Prospection{% endblock %}</title>
 </head>
 <body>
@@ -53,5 +52,7 @@
     </div>
 </div>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% block my_script %}
+{% endblock %}
 </body>
 </html>

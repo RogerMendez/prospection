@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -217,12 +216,14 @@ def my_information(request):
         if request.method == 'POST':
             form = PersonForm(request.POST)
             if form.is_valid():
-                form.save()
+                person = form.save(commit=False)
+                person.user = request.user
+                person.save()
                 sms = 'Información Registrada Correctamente'
                 messages.success(request, sms)
                 return HttpResponseRedirect(reverse(my_information))
         else:
-            form = PersonForm(initial={'user':request.user})
+            form = PersonForm()
     return render(request, 'users/new_person.html', {
         'form':form,
     })

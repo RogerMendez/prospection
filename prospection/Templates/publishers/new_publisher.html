@@ -1,0 +1,34 @@
+{% extends 'form.html' %}
+
+{% block title %}
+Nueva Publicaciòn
+{% endblock %}
+
+{% block menu_left %}
+{% include 'publishers/__menuleft.html' %}
+<script>
+$('#new-publisher-menu').addClass('active');
+</script>
+{% endblock %}
+
+{% block legend %}
+Nueva Publicaciòn
+{% endblock %}
+
+{% block my_script %}
+<script>
+type_content();
+$('#id_type').change(function() {
+    type_content();
+    //alert($(this).val());
+});
+function type_content(){
+    var type = $('#id_type').val();
+    if(type == 'text'){
+        $('#id_link').parent().parent().addClass('hidden');
+    }else{
+        $('#id_link').parent().parent().removeClass('hidden');
+    }
+}
+</script>
+{% endblock %}

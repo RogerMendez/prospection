@@ -1,0 +1,11 @@
+<ul class="nav nav-pills nav-stacked">
+    <li role="presentation" id="my_publishers-menu">
+        <a href="{% url 'publisher-index' %}">Mis Publicaciones</a>
+    </li>
+    <li role="presentation", id="new-publisher-menu">
+        <a href="{% url 'publisher-new' %}">Nueva Publicaciòn</a>
+    </li>
+</ul>
+<script>
+    $('#publisher-menu').addClass('active');
+</script>

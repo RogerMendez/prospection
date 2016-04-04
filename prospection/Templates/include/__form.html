@@ -1,0 +1,43 @@
+<div class="col-md-6">
+    <form class="form-horizontal" action="" method="post">{% csrf_token %}
+        <fieldset>
+            {% for field in form %}
+                {% if field.errors %}
+                    <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    <div class="col-md-8">
+                        {{ field }}
+                    </div>
+                </div>
+                {% if field.help_text %}
+                    <p>
+                        <small class="fg-green">{{ field.help_text|safe }}</small>
+                    </p>
+                {% endif %}
+            {% endfor %}
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-8">
+                    <button type="submit" class="btn btn-success">
+                        {% block submit %}
+                            Guardar
+                        {% endblock %}
+                    </button>
+
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div class="col-md-3"></div>
+<script>
+    $(document).ready(function(){
+        $('label').addClass('col-sm-4 control-label');
+        $('input').addClass('form-control');
+        $('select').addClass('form-control');
+        $('textarea').addClass('form-control');
+    });
+</script>

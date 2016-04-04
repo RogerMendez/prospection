@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+
+{% block title %}
+Mis Publicaciones
+{% endblock %}
+
+{% block menu_left %}
+{% include 'publishers/__menuleft.html' %}
+<script>
+$('#my_publishers-menu').addClass('active');
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <h3>Mis Publicaciones</h3>
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Contenido</th>
+                    <th>Tipo de Contenido</th>
+                    <th>Num. de Publicaciones</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for publisher in publishers %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ publisher.content|truncatewords:10 }}</td>
+                        <td>
+                            {% if publisher.type == 'text' %}
+                                Texto
+                            {% elif publisher.type == 'image' %}
+                                Imagen
+                            {% elif publisher.type == 'video' %}
+                                Video
+                            {% elif publisher.type == 'page' %}
+                                Pagina
+                            {% endif %}
+                        </td>
+                        <td>{{ publisher.dates_set.select_related.count }}</td>
+                        <td>
+                            <a href="{% url 'publisher-dates' publisher.id %}" class="btn btn-success">Fechas</a>
+                        </td>
+                        <td>
+                            {% if publisher.start == False %}
+                                <a href="" class="btn btn-info">Iniciar</a>
+                            {% endif %}
+                            {% if publisher.start == True and publisher.ends == False %}
+                                <a href="" class="btn btn-danger">Terminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

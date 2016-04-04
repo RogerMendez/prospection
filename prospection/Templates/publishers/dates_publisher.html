@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+{% block title %}
+Fechas Publicaciòn
+{% endblock %}
+
+{% block menu_left %}
+{% include 'publishers/__menuleft.html' %}
+<script>
+$('#my_publishers-menu').addClass('active');
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="row {% if publisher.state == True %}hidden{% endif %}">
+    <h3>Agregar Fechas a Publicaciòn</h3>
+    <div class="col-md-12">
+        <p>
+            <strong>Contenido: </strong>{{ publisher.content }}
+        </p>
+        <p>
+            <strong>Tipo de Publicaciòn: </strong>
+            {% if publisher.type == 'text' %}
+                Texto
+            {% elif publisher.type == 'image' %}
+                Imagen
+                <p>
+                    <a href="{{ publisher.link }}" target="_blank">Ver Imagen</a>
+                </p>
+            {% elif publisher.type == 'video' %}
+                Video
+            {% elif publisher.type == 'page' %}
+                Pagina
+            {% endif %}
+        </p>
+    </div>
+</div>
+<hr>
+<div class="row {% if publisher.state == True %}hidden{% endif %}">
+    {% include 'include/__form.html' %}
+</div>
+<div class="row">
+    <h3>Fechas Asignadas</h3>
+     {% if publisher.state == False %}
+         <p><a href="{% url 'publisher-ends-dates' publisher.id %}" class="btn btn-primary">Terminar</a></p>
+     {% endif %}
+    <div class="col-md-12">
+        <table class="table table-striped" id="dates_publisher">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>Fecha De Publicación</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+                {% for date in dates %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ date.date }}</td>
+                        <td>
+                            {% if date.state == False %}
+                                <a href="" class="btn btn-warning">Quitar</a>
+                            {% endif %}
+                        </td>
+                    </tr>                
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

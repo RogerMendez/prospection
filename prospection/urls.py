@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^logout/$', user_logout, name='user-logout'),
 
     url(r'^users/', include('users.urls')),
+    url(r'^publisher/', include('publishers.urls')),
 ]
